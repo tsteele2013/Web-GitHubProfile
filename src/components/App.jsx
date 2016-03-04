@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import Profile from './github/Profile.jsx';
+import Search from './github/Search.jsx';
 
 class App extends Component {
   constructor(props){
@@ -12,6 +13,7 @@ class App extends Component {
       perPage: 5
     }
   }
+
 
   //Get user data from GitHub
   getUserData(){
@@ -45,21 +47,28 @@ class App extends Component {
         alert(err);
       }.bind(this)
     });
-  }
-
-  componentDidMount(){
-    this.getUserData();
-    this.getUserRepos();
-  }
-
-  render(){
-    return(
-      <div>
-        <Profile {...this.state} />
-      </div>
-    )
-  }
 }
+    handleFormSubmit(username){
+      this.setState({username: username}, function(){
+        this.getUserData();
+        this.getUserRepos();
+      });
+    }
+
+    componentDidMount(){
+      this.getUserData();
+      this.getUserRepos();
+    }
+
+    render(){
+      return(
+        <div>
+          <Search onFormSubmit = {this.handleFormSubmit.bind(this)} />
+          <Profile {...this.state} />
+        </div>
+      )
+    }
+  }
 
 App.propTypes = {
   clientId: React.PropTypes.string,
